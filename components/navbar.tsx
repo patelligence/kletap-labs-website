@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "#what-we-do", label: "What We Do" },
-  { href: "#ventures", label: "Ventures" },
   { href: "#patelligence", label: "Patelligence AI" },
   { href: "#workflow-builder", label: "Try Demo" },
   { href: "#about", label: "About" },
