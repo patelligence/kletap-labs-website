@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kletap Labs — Intelligent Apps & AI Systems</title>
+<meta name="description" content="Kletap Labs creates AI-powered products, automations, and digital experiences that simplify life and scale businesses smarter."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --black: #050507;
+  --charcoal: #0e0e12;
+  --surface: #13131a;
+  --surface2: #1a1a24;
+  --border: rgba(255,255,255,0.07);
+  --blue: #2563ff;
+  --blue-light: #4d84ff;
+  --blue-glow: rgba(37,99,255,0.25);
+  --white: #f8f9ff;
+  --muted: #7a7a8c;
+  --text: #d4d4e8;
+  --radius: 16px;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--black);color:var(--text);font-family:var(--font-body);overflow-x:hidden;line-height:1.6;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;}
+button{cursor:pointer;border:none;background:none;font-family:var(--font-body);}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--black);}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px;}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 6vw;height:68px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:all .4s ease;backdrop-filter:blur(0px);}
+nav.scrolled{background:rgba(5,5,7,0.85);border-color:var(--border);backdrop-filter:blur(20px);}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:800;font-size:1.1rem;color:var(--white);}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),#60a5fa);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;color:#fff;letter-spacing:-.5px;}
+.nav-links{display:flex;align-items:center;gap:2rem;}
+.nav-links a{font-size:.875rem;font-weight:500;color:var(--muted);transition:color .2s;letter-spacing:.02em;}
+.nav-links a:hover,.nav-links a.active{color:var(--white);}
+.nav-cta{padding:9px 20px;background:var(--blue);color:#fff;border-radius:8px;font-size:.875rem;font-weight:600;transition:all .2s;letter-spacing:.02em;}
+.nav-cta:hover{background:var(--blue-light);transform:translateY(-1px);box-shadow:0 8px 24px var(--blue-glow);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:all .3s;}
+.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(5,5,7,0.98);backdrop-filter:blur(20px);padding:2rem 6vw;border-bottom:1px solid var(--border);z-index:999;flex-direction:column;gap:1.5rem;}
+.mobile-menu a{font-size:1.1rem;font-weight:500;color:var(--muted);padding:.5rem 0;border-bottom:1px solid var(--border);}
+.mobile-menu.open{display:flex;}
+
+/* ─── PAGES ─── */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+
+/* ─── HERO ─── */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 6vw 80px;overflow:hidden;}
+.hero-canvas{position:absolute;inset:0;z-index:0;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(37,99,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,255,.04) 1px,transparent 1px);background-size:60px 60px;z-index:1;}
+.hero-gradient{position:absolute;top:20%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(37,99,255,.15) 0%,transparent 70%);z-index:1;animation:pulse 4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}}
+.hero-content{position:relative;z-index:2;max-width:860px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border:1px solid rgba(37,99,255,.4);border-radius:100px;font-size:.78rem;font-weight:500;color:var(--blue-light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2rem;background:rgba(37,99,255,.08);}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue-light);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+h1.hero-title{font-family:var(--font-display);font-size:clamp(2.8rem,6vw,5.2rem);font-weight:800;color:var(--white);line-height:1.05;letter-spacing:-.03em;margin-bottom:1.5rem;}
+h1.hero-title span{background:linear-gradient(135deg,var(--blue-light),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);max-width:600px;margin:0 auto 2.5rem;font-weight:300;line-height:1.7;}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;}
+.btn-primary{padding:14px 32px;background:linear-gradient(135deg,var(--blue),#4d84ff);color:#fff;border-radius:10px;font-size:.95rem;font-weight:600;transition:all .3s;display:inline-flex;align-items:center;gap:8px;letter-spacing:.01em;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px var(--blue-glow);}
+.btn-secondary{padding:14px 32px;border:1px solid var(--border);color:var(--white);border-radius:10px;font-size:.95rem;font-weight:500;transition:all .3s;display:inline-flex;align-items:center;gap:8px;}
+.btn-secondary:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.04);transform:translateY(-2px);}
+.floating-cards{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.float-card{position:absolute;padding:14px 18px;background:rgba(19,19,26,.9);border:1px solid var(--border);border-radius:12px;backdrop-filter:blur(12px);font-size:.78rem;font-family:var(--font-mono);color:var(--blue-light);white-space:nowrap;animation:float 6s ease-in-out infinite;}
+.float-card:nth-child(1){top:20%;left:8%;animation-delay:0s;}
+.float-card:nth-child(2){top:35%;right:7%;animation-delay:1.5s;}
+.float-card:nth-child(3){bottom:28%;left:6%;animation-delay:3s;}
+.float-card:nth-child(4){bottom:22%;right:9%;animation-delay:4.5s;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--blue),transparent);animation:scroll-anim 2s ease-in-out infinite;}
+@keyframes scroll-anim{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+/* ─── SECTIONS ─── */
+section{padding:6rem 6vw;}
+.section-tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.72rem;color:var(--blue-light);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem;}
+.section-tag::before{content:'//';color:var(--blue);font-weight:700;}
+h2.section-title{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:var(--white);line-height:1.1;letter-spacing:-.025em;margin-bottom:1rem;}
+h2.section-title span{background:linear-gradient(135deg,var(--blue-light),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.section-sub{font-size:1.05rem;color:var(--muted);max-width:560px;line-height:1.7;font-weight:300;}
+.section-header{margin-bottom:4rem;}
+.centered{text-align:center;}
+.centered .section-sub{margin:0 auto;}
+
+/* ─── SERVICES STRIP ─── */
+.services-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;}
+.strip-card{padding:2rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:all .3s;position:relative;overflow:hidden;}
+.strip-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue-glow),transparent);opacity:0;transition:opacity .3s;}
+.strip-card:hover{border-color:rgba(37,99,255,.3);transform:translateY(-4px);}
+.strip-card:hover::before{opacity:1;}
+.strip-icon{width:44px;height:44px;border-radius:10px;background:rgba(37,99,255,.12);border:1px solid rgba(37,99,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:1.2rem;}
+.strip-card h3{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.5rem;}
+.strip-card p{font-size:.85rem;color:var(--muted);line-height:1.6;}
+
+/* ─── FEATURED APPS ─── */
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;}
+.app-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all .35s;cursor:pointer;position:relative;}
+.app-card:hover{transform:translateY(-6px);border-color:rgba(37,99,255,.35);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 40px var(--blue-glow);}
+.app-card-header{padding:2rem;background:linear-gradient(135deg,var(--surface2),var(--surface));position:relative;}
+.app-card-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.5rem;}
+.app-card h3{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--white);margin-bottom:.5rem;}
+.app-card p{font-size:.875rem;color:var(--muted);line-height:1.6;}
+.app-card-footer{padding:1.25rem 2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.status-pill{padding:4px 12px;border-radius:100px;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+.status-soon{background:rgba(37,99,255,.12);color:var(--blue-light);border:1px solid rgba(37,99,255,.25);}
+.status-beta{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.25);}
+.arrow-icon{color:var(--muted);font-size:1rem;transition:all .3s;}
+.app-card:hover .arrow-icon{color:var(--blue-light);transform:translateX(4px);}
+
+/* ─── STATS ─── */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2rem;padding:4rem 6vw;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.stat-item{text-align:center;}
+.stat-num{font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--white);letter-spacing:-.02em;}
+.stat-num span{color:var(--blue-light);}
+.stat-label{font-size:.85rem;color:var(--muted);margin-top:.25rem;}
+
+/* ─── TESTIMONIALS ─── */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;}
+.testi-card{padding:2rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:all .3s;}
+.testi-card:hover{border-color:rgba(37,99,255,.2);}
+.testi-stars{color:#f59e0b;font-size:.85rem;margin-bottom:1rem;letter-spacing:2px;}
+.testi-text{font-size:.95rem;color:var(--text);line-height:1.7;margin-bottom:1.5rem;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:.75rem;}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#a78bfa);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;}
+.testi-name{font-weight:600;color:var(--white);font-size:.9rem;}
+.testi-role{font-size:.78rem;color:var(--muted);}
+
+/* ─── NEWSLETTER ─── */
+.newsletter{padding:5rem 6vw;text-align:center;}
+.newsletter-box{max-width:600px;margin:0 auto;padding:3rem;background:var(--surface);border:1px solid var(--border);border-radius:24px;position:relative;overflow:hidden;}
+.newsletter-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at center,rgba(37,99,255,.06) 0%,transparent 60%);pointer-events:none;}
+.newsletter-box h3{font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--white);margin-bottom:.75rem;}
+.newsletter-box p{color:var(--muted);font-size:.95rem;margin-bottom:2rem;}
+.email-form{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;}
+.email-input{flex:1;min-width:220px;padding:12px 18px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;color:var(--white);font-size:.9rem;font-family:var(--font-body);outline:none;transition:border-color .2s;}
+.email-input::placeholder{color:var(--muted);}
+.email-input:focus{border-color:rgba(37,99,255,.5);}
+
+/* ─── FOOTER ─── */
+footer{background:var(--charcoal);border-top:1px solid var(--border);padding:4rem 6vw 2rem;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-brand .nav-logo{margin-bottom:1rem;}
+.footer-brand p{font-size:.875rem;color:var(--muted);line-height:1.7;max-width:280px;}
+.footer-social{display:flex;gap:.75rem;margin-top:1.5rem;}
+.social-btn{width:36px;height:36px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .2s;color:var(--muted);}
+.social-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
+.footer-col h4{font-family:var(--font-display);font-weight:700;color:var(--white);margin-bottom:1.2rem;font-size:.9rem;}
+.footer-col a{display:block;font-size:.875rem;color:var(--muted);margin-bottom:.6rem;transition:color .2s;}
+.footer-col a:hover{color:var(--white);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;gap:1rem;}
+.footer-bottom p{font-size:.8rem;color:var(--muted);}
+.footer-bottom span{color:var(--blue-light);}
+
+/* ─── ABOUT PAGE ─── */
+.about-hero{padding:140px 6vw 80px;max-width:900px;}
+.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.mission-text h2{font-family:var(--font-display);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;color:var(--white);line-height:1.15;margin-bottom:1.5rem;}
+.mission-text p{color:var(--muted);line-height:1.8;margin-bottom:1.2rem;}
+.mission-visual{position:relative;}
+.mission-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;}
+.mission-card-glow{position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(37,99,255,.3),transparent 70%);border-radius:50%;}
+.timeline{position:relative;padding-left:2rem;}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--blue),transparent);}
+.timeline-item{position:relative;margin-bottom:2.5rem;}
+.timeline-dot{position:absolute;left:-2.4rem;top:.3rem;width:12px;height:12px;border-radius:50%;background:var(--blue);border:2px solid var(--blue-light);box-shadow:0 0 12px var(--blue-glow);}
+.timeline-year{font-family:var(--font-mono);font-size:.72rem;color:var(--blue-light);letter-spacing:.1em;margin-bottom:.3rem;}
+.timeline-item h4{font-family:var(--font-display);font-weight:700;color:var(--white);margin-bottom:.4rem;}
+.timeline-item p{font-size:.875rem;color:var(--muted);line-height:1.6;}
+.values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;}
+.value-card{padding:2rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center;transition:all .3s;}
+.value-card:hover{border-color:rgba(37,99,255,.3);transform:translateY(-4px);}
+.value-icon{font-size:2rem;margin-bottom:1rem;}
+.value-card h3{font-family:var(--font-display);font-weight:700;color:var(--white);margin-bottom:.5rem;}
+.value-card p{font-size:.85rem;color:var(--muted);}
+
+/* ─── PRODUCTS PAGE ─── */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem;}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;transition:all .35s;cursor:pointer;position:relative;overflow:hidden;}
+.product-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(37,99,255,.04));opacity:0;transition:opacity .3s;}
+.product-card:hover{transform:translateY(-6px);border-color:rgba(37,99,255,.3);box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.product-card:hover::after{opacity:1;}
+.product-icon-wrap{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:1.5rem;border:1px solid rgba(255,255,255,.08);}
+.product-card h3{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:.5rem;}
+.product-card p{font-size:.875rem;color:var(--muted);line-height:1.6;margin-bottom:1.5rem;}
+.product-tags{display:flex;gap:.5rem;flex-wrap:wrap;}
+.tag{padding:3px 10px;border-radius:100px;font-size:.7rem;font-weight:500;letter-spacing:.04em;background:rgba(37,99,255,.1);color:var(--blue-light);border:1px solid rgba(37,99,255,.2);}
+
+/* ─── SERVICES PAGE ─── */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:2rem;}
+.service-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;transition:all .3s;position:relative;overflow:hidden;}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),#a78bfa);transform:scaleX(0);transition:transform .3s;transform-origin:left;}
+.service-card:hover::before{transform:scaleX(1);}
+.service-card:hover{border-color:rgba(37,99,255,.2);transform:translateY(-4px);}
+.service-icon{width:52px;height:52px;border-radius:12px;background:rgba(37,99,255,.1);border:1px solid rgba(37,99,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1.5rem;}
+.service-card h3{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:.75rem;}
+.service-card p{font-size:.875rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;}
+.service-features{list-style:none;}
+.service-features li{font-size:.82rem;color:var(--muted);padding:.3rem 0;display:flex;align-items:center;gap:.5rem;}
+.service-features li::before{content:'→';color:var(--blue-light);font-size:.75rem;}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:4rem;}
+.pricing-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;transition:all .3s;text-align:center;}
+.pricing-card.featured{border-color:rgba(37,99,255,.4);background:linear-gradient(135deg,rgba(37,99,255,.08),var(--surface));position:relative;}
+.pricing-card.featured::before{content:'Most Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;padding:4px 16px;border-radius:100px;font-size:.72rem;font-weight:600;letter-spacing:.06em;white-space:nowrap;}
+.pricing-card h3{font-family:var(--font-display);font-weight:700;color:var(--white);margin-bottom:.5rem;}
+.pricing-card .price{font-family:var(--font-display);font-size:2.5rem;font-weight:800;color:var(--white);margin:1.5rem 0 .5rem;}
+.pricing-card .price span{font-size:1rem;font-weight:400;color:var(--muted);}
+.pricing-card p{font-size:.85rem;color:var(--muted);margin-bottom:2rem;}
+.pricing-features{list-style:none;text-align:left;margin-bottom:2rem;}
+.pricing-features li{font-size:.85rem;color:var(--muted);padding:.5rem 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem;}
+.pricing-features li::before{content:'✓';color:#34d399;font-weight:700;}
+/* booking form */
+.booking-section{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:3rem;max-width:700px;margin:4rem auto 0;}
+.booking-section h3{font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:var(--white);margin-bottom:.5rem;}
+.booking-section p{color:var(--muted);margin-bottom:2rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-field{display:flex;flex-direction:column;gap:.5rem;}
+.form-field.full{grid-column:1/-1;}
+.form-field label{font-size:.8rem;font-weight:500;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;}
+.form-field input,.form-field select,.form-field textarea{padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:var(--font-body);font-size:.9rem;outline:none;transition:border-color .2s;-webkit-appearance:none;}
+.form-field select option{background:var(--charcoal);}
+.form-field textarea{resize:vertical;min-height:120px;}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:rgba(37,99,255,.5);}
+.form-field input::placeholder,.form-field textarea::placeholder{color:var(--muted);}
+
+/* ─── CONTACT PAGE ─── */
+.contact-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:start;}
+.contact-info h2{font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--white);margin-bottom:1rem;}
+.contact-info p{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+.contact-links{display:flex;flex-direction:column;gap:1rem;}
+.contact-link{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;transition:all .2s;}
+.contact-link:hover{border-color:rgba(37,99,255,.3);background:rgba(37,99,255,.05);}
+.contact-link-icon{width:40px;height:40px;border-radius:10px;background:rgba(37,99,255,.1);display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.contact-link-text strong{display:block;font-size:.85rem;color:var(--white);font-weight:600;}
+.contact-link-text span{font-size:.8rem;color:var(--muted);}
+.calendly-placeholder{margin-top:2rem;padding:2rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-align:center;}
+.calendly-placeholder p{font-size:.85rem;color:var(--muted);margin-bottom:1rem;}
+.contact-form{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;}
+.contact-form h3{font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--white);margin-bottom:1.5rem;}
+
+/* ─── DIVIDER ─── */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 6vw;}
+
+/* ─── ANIMATIONS ─── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .nav-links,.nav-cta{display:none;}
+  .hamburger{display:flex;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .mission-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  section{padding:4rem 5vw;}
+  .footer-grid{grid-template-columns:1fr;}
+  .float-card:nth-child(3),.float-card:nth-child(4){display:none;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+}
+
+/* ─── CURSOR GLOW ─── */
+.cursor-glow{position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,255,.06),transparent 60%);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:left .1s,top .1s;mix-blend-mode:screen;}
+</style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="navigate('home')">
+    <div class="logo-mark">KL</div>
+    Kletap Labs
+  </div>
+  <div class="nav-links">
+    <a href="#" onclick="navigate('home')" data-page="home">Home</a>
+    <a href="#" onclick="navigate('about')" data-page="about">About</a>
+    <a href="#" onclick="navigate('products')" data-page="products">Products</a>
+    <a href="#" onclick="navigate('services')" data-page="services">Services</a>
+    <a href="#" onclick="navigate('contact')" data-page="contact">Contact</a>
+    <a href="#" class="nav-cta" onclick="navigate('contact')">Get Started →</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="navigate('home');toggleMobile()">Home</a>
+  <a href="#" onclick="navigate('about');toggleMobile()">About</a>
+  <a href="#" onclick="navigate('products');toggleMobile()">Products</a>
+  <a href="#" onclick="navigate('services');toggleMobile()">Services</a>
+  <a href="#" onclick="navigate('contact');toggleMobile()">Contact</a>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-canvas" id="heroCanvas"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-gradient"></div>
+    <div class="floating-cards">
+      <div class="float-card">🤖 AI Workflow Engine — active</div>
+      <div class="float-card">⚡ 3.2x faster automation</div>
+      <div class="float-card">🔧 SaaS builder — ready</div>
+      <div class="float-card">📊 Insights dashboard — live</div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="hero-badge-dot"></span> AI Studio · Est. 2024</div>
+      <h1 class="hero-title">Building Intelligent Apps<br>&amp; <span>AI Systems</span> for the Future.</h1>
+      <p class="hero-sub">Kletap Labs creates AI-powered products, automations, and digital experiences that simplify life and scale businesses smarter.</p>
+      <div class="hero-btns">
+        <a href="#" class="btn-primary" onclick="navigate('products')">Explore Products ↗</a>
+        <a href="#" class="btn-secondary" onclick="navigate('contact')">Work With Us</a>
+      </div>
+    </div>
+    <div class="hero-scroll"><div class="scroll-line"></div>scroll</div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-item reveal"><div class="stat-num">10<span>+</span></div><div class="stat-label">Years of Tech Experience</div></div>
+    <div class="stat-item reveal reveal-delay-1"><div class="stat-num">6<span>+</span></div><div class="stat-label">Products in Development</div></div>
+    <div class="stat-item reveal reveal-delay-2"><div class="stat-num">3<span>x</span></div><div class="stat-label">Average Automation Speed</div></div>
+    <div class="stat-item reveal reveal-delay-3"><div class="stat-num">∞</div><div class="stat-label">Scalability Potential</div></div>
+  </div>
+
+  <!-- SERVICES STRIP -->
+  <section>
+    <div class="section-header reveal">
+      <div class="section-tag">What We Build</div>
+      <h2 class="section-title">Intelligence across<br>every <span>layer</span></h2>
+      <p class="section-sub">From workflow automation to full SaaS platforms — we engineer solutions that think, adapt, and scale.</p>
+    </div>
+    <div class="services-strip">
+      <div class="strip-card reveal"><div class="strip-icon">🔄</div><h3>AI Workflow Automation</h3><p>End-to-end intelligent automation that replaces manual, repetitive work with smart systems.</p></div>
+      <div class="strip-card reveal reveal-delay-1"><div class="strip-icon">📱</div><h3>Mobile Applications</h3><p>Consumer-grade iOS and Android apps powered by machine learning and beautiful UX.</p></div>
+      <div class="strip-card reveal reveal-delay-2"><div class="strip-icon">🏗️</div><h3>SaaS Development</h3><p>Full-stack cloud platforms built for scale, speed, and seamless user experience.</p></div>
+      <div class="strip-card reveal reveal-delay-3"><div class="strip-icon">🧠</div><h3>AI Consulting</h3><p>Strategic guidance from 10+ years of technology audit, process improvement & systems optimization.</p></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FEATURED APPS -->
+  <section>
+    <div class="section-header reveal centered">
+      <div class="section-tag">Products</div>
+      <h2 class="section-title">Apps being <span>built</span> right now</h2>
+      <p class="section-sub">A growing portfolio of AI-first products designed for consumers and businesses.</p>
+    </div>
+    <div class="apps-grid">
+      <div class="app-card reveal">
+        <div class="app-card-header">
+          <div class="app-card-icon" style="background:linear-gradient(135deg,rgba(37,99,255,.2),rgba(37,99,255,.05));">⛳</div>
+          <h3>Caddie AI</h3>
+          <p>Your intelligent golf assistant — course strategy, swing analysis, and real-time coaching in your pocket.</p>
+        </div>
+        <div class="app-card-footer"><span class="status-pill status-soon">Coming Soon</span><span class="arrow-icon">→</span></div>
+      </div>
+      <div class="app-card reveal reveal-delay-1">
+        <div class="app-card-header">
+          <div class="app-card-icon" style="background:linear-gradient(135deg,rgba(167,139,250,.2),rgba(167,139,250,.05));">👨‍👩‍👧‍👦</div>
+          <h3>FamilyOS</h3>
+          <p>The all-in-one family organization platform — schedules, tasks, finances, and communication in one intelligent hub.</p>
+        </div>
+        <div class="app-card-footer"><span class="status-pill status-soon">Coming Soon</span><span class="arrow-icon">→</span></div>
+      </div>
+      <div class="app-card reveal reveal-delay-2">
+        <div class="app-card-header">
+          <div class="app-card-icon" style="background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(245,158,11,.05));">🃏</div>
+          <h3>CardVault AI</h3>
+          <p>AI-powered trading card platform — scan, grade, value, and trade collectibles with computer vision intelligence.</p>
+        </div>
+        <div class="app-card-footer"><span class="status-pill status-soon">Coming Soon</span><span class="arrow-icon">→</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;"><a href="#" class="btn-secondary" onclick="navigate('products')">View All Products →</a></div>
+  </section>
+
+  <!-- STUDIO OVERVIEW -->
+  <section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="mission-grid">
+      <div class="mission-text reveal">
+        <div class="section-tag">Studio Overview</div>
+        <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;color:var(--white);line-height:1.15;margin-bottom:1.5rem;">We don't just build apps.<br>We build <span style="background:linear-gradient(135deg,var(--blue-light),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">futures.</span></h2>
+        <p>Kletap Labs is an AI technology studio founded on 10+ years of deep expertise in technology auditing, consulting, process improvement, and systems optimization.</p>
+        <p style="margin-top:1rem;">We combine strategic thinking with elite engineering to create AI products that genuinely change how people work, organize, and grow.</p>
+        <a href="#" class="btn-primary" style="display:inline-flex;margin-top:2rem;" onclick="navigate('about')">Our Story →</a>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="mission-card" style="position:relative;">
+          <div class="mission-card-glow"></div>
+          <div style="font-family:var(--font-mono);font-size:.72rem;color:var(--blue-light);letter-spacing:.1em;margin-bottom:1.5rem;">// kletap_core.ai</div>
+          <div style="display:flex;flex-direction:column;gap:.75rem;">
+            <div style="display:flex;justify-content:space-between;padding:.75rem;background:rgba(37,99,255,.06);border-radius:8px;border:1px solid rgba(37,99,255,.15);">
+              <span style="font-size:.85rem;color:var(--text);">AI Automation Layer</span>
+              <span style="font-size:.75rem;font-family:var(--font-mono);color:#34d399;">● active</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:.75rem;background:rgba(37,99,255,.06);border-radius:8px;border:1px solid rgba(37,99,255,.15);">
+              <span style="font-size:.85rem;color:var(--text);">SaaS Infrastructure</span>
+              <span style="font-size:.75rem;font-family:var(--font-mono);color:#f59e0b;">● building</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:.75rem;background:rgba(37,99,255,.06);border-radius:8px;border:1px solid rgba(37,99,255,.15);">
+              <span style="font-size:.85rem;color:var(--text);">Mobile App Suite</span>
+              <span style="font-size:.75rem;font-family:var(--font-mono);color:#f59e0b;">● building</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:.75rem;background:rgba(37,99,255,.06);border-radius:8px;border:1px solid rgba(37,99,255,.15);">
+              <span style="font-size:.85rem;color:var(--text);">Consulting Services</span>
+              <span style="font-size:.75rem;font-family:var(--font-mono);color:#34d399;">● active</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section>
+    <div class="section-header reveal centered">
+      <div class="section-tag">Testimonials</div>
+      <h2 class="section-title">Trusted by <span>innovators</span></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">"Kletap Labs transformed our entire back-office operation. The automation they built saved us 15+ hours per week and dramatically reduced errors."</p><div class="testi-author"><div class="testi-avatar">JM</div><div><div class="testi-name">James M.</div><div class="testi-role">CEO, Operations Firm</div></div></div></div>
+      <div class="testi-card reveal reveal-delay-1"><div class="testi-stars">★★★★★</div><p class="testi-text">"The AI consulting engagement was a game-changer. They identified inefficiencies we'd missed for years and built a system that practically runs itself."</p><div class="testi-author"><div class="testi-avatar">SK</div><div><div class="testi-name">Sarah K.</div><div class="testi-role">COO, Logistics Co.</div></div></div></div>
+      <div class="testi-card reveal reveal-delay-2"><div class="testi-stars">★★★★★</div><p class="testi-text">"Brilliant technical expertise meets real business strategy. Kletap Labs doesn't just code — they understand problems at a deeper level."</p><div class="testi-author"><div class="testi-avatar">DT</div><div><div class="testi-name">David T.</div><div class="testi-role">Founder, Tech Startup</div></div></div></div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <div class="newsletter-box reveal">
+      <div class="section-tag" style="justify-content:center;">Stay in the loop</div>
+      <h3>Be first to know when<br>we launch.</h3>
+      <p>Get early access to apps, automation insights, and AI studio updates. No spam, ever.</p>
+      <div class="email-form">
+        <input type="email" class="email-input" placeholder="your@email.com"/>
+        <button class="btn-primary" onclick="handleSubscribe(this)">Subscribe →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo"><div class="logo-mark">KL</div>Kletap Labs</div>
+        <p>An AI-powered technology studio building the next generation of intelligent apps, automations, and SaaS platforms.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" title="X/Twitter">𝕏</a>
+          <a href="#" class="social-btn" title="LinkedIn">in</a>
+          <a href="#" class="social-btn" title="GitHub">⌥</a>
+          <a href="#" class="social-btn" title="Instagram">◎</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Company</h4><a href="#" onclick="navigate('about')">About</a><a href="#" onclick="navigate('products')">Products</a><a href="#" onclick="navigate('services')">Services</a><a href="#" onclick="navigate('contact')">Contact</a></div>
+      <div class="footer-col"><h4>Products</h4><a href="#">Caddie AI</a><a href="#">FamilyOS</a><a href="#">CardVault AI</a><a href="#">AutoFlow</a></div>
+      <div class="footer-col"><h4>Services</h4><a href="#" onclick="navigate('services')">AI Automation</a><a href="#" onclick="navigate('services')">SaaS Development</a><a href="#" onclick="navigate('services')">AI Consulting</a><a href="#" onclick="navigate('contact')">Book a Call</a></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>Kletap Labs</span>. All rights reserved. Built with intelligence.</p>
+      <p style="font-size:.75rem;color:var(--muted);">Privacy · Terms · Cookies</p>
+    </div>
+  </footer>
+
+</div><!-- /home -->
+
+
+<!-- ══════════════════════════════════════
+     PAGE: ABOUT
+══════════════════════════════════════ -->
+<div class="page" id="page-about">
+
+  <div class="about-hero" style="padding:140px 6vw 60px;">
+    <div class="section-tag">About Kletap Labs</div>
+    <h1 class="hero-title" style="text-align:left;font-size:clamp(2.5rem,5vw,4rem);">We build <span style="background:linear-gradient(135deg,var(--blue-light),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">AI-first</span><br>digital futures.</h1>
+    <p class="hero-sub" style="text-align:left;margin:0;">Kletap Labs is a technology studio rooted in deep consulting expertise, reimagined for the AI era.</p>
+  </div>
+
+  <!-- MISSION -->
+  <section>
+    <div class="mission-grid">
+      <div class="mission-text reveal">
+        <div class="section-tag">Our Mission</div>
+        <h2>Automation and intelligence for <span style="color:var(--blue-light);">everyone.</span></h2>
+        <p>We believe AI should be accessible, practical, and transformative — not just for enterprise giants, but for everyday businesses and consumers.</p>
+        <p>Kletap Labs was founded to bridge the gap between complex AI capabilities and real-world applications that people actually use and love.</p>
+        <p>Every product we build is rooted in a simple question: <em style="color:var(--white);">"Does this make life or business genuinely better?"</em></p>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="mission-card">
+          <div class="mission-card-glow"></div>
+          <p style="font-family:var(--font-mono);font-size:.75rem;color:var(--blue-light);margin-bottom:1rem;">// mission_statement.md</p>
+          <p style="font-size:1.05rem;color:var(--white);line-height:1.8;font-style:italic;">"To make AI the most powerful, accessible, and human tool in the world — one intelligent app at a time."</p>
+          <p style="margin-top:1rem;font-size:.8rem;color:var(--muted);">— Founder, Kletap Labs</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FOUNDER -->
+  <section>
+    <div class="section-header reveal centered">
+      <div class="section-tag">Founder</div>
+      <h2 class="section-title">10+ Years of <span>Expertise</span></h2>
+      <p class="section-sub">A technology veteran with a passion for building systems that actually work.</p>
+    </div>
+    <div style="max-width:760px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:3rem;display:flex;gap:2rem;align-items:flex-start;flex-wrap:wrap;" class="reveal">
+      <div style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,var(--blue),#a78bfa);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.8rem;font-weight:800;color:#fff;flex-shrink:0;">KL</div>
+      <div style="flex:1;min-width:200px;">
+        <h3 style="font-family:var(--font-display);font-weight:800;color:var(--white);margin-bottom:.25rem;font-size:1.3rem;">Founder & CEO</h3>
+        <p style="font-size:.8rem;color:var(--blue-light);font-family:var(--font-mono);margin-bottom:1.25rem;letter-spacing:.06em;">KLETAP LABS</p>
+        <p style="color:var(--muted);line-height:1.8;margin-bottom:1rem;">With over a decade in technology audit, consulting, process improvement, and systems optimization, the founder of Kletap Labs has worked across industries to identify inefficiencies, design smarter systems, and deliver lasting transformations.</p>
+        <p style="color:var(--muted);line-height:1.8;">This deep operational background informs every product Kletap Labs builds — practical, efficient, and engineered with a clear understanding of real-world complexity.</p>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem;">
+          <span class="tag">Technology Audit</span>
+          <span class="tag">Process Improvement</span>
+          <span class="tag">Systems Design</span>
+          <span class="tag">AI Strategy</span>
+          <span class="tag">SaaS Architecture</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="section-header reveal">
+      <div class="section-tag">Journey</div>
+      <h2 class="section-title">The <span>timeline</span></h2>
+    </div>
+    <div class="timeline" style="max-width:600px;" class="reveal">
+      <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-year">2013–2016</div><h4>Technology Consulting Roots</h4><p>Deep immersion in enterprise technology auditing, systems analysis, and process optimization across complex organizations.</p></div>
+      <div class="timeline-item reveal reveal-delay-1"><div class="timeline-dot"></div><div class="timeline-year">2016–2020</div><h4>Process Engineering & Systems Optimization</h4><p>Led large-scale transformation initiatives — building smarter workflows and measurable efficiency gains for clients.</p></div>
+      <div class="timeline-item reveal reveal-delay-2"><div class="timeline-dot"></div><div class="timeline-year">2020–2023</div><h4>AI Exploration & Product Vision</h4><p>Began integrating AI/ML capabilities into consulting work; developed vision for consumer-facing AI products.</p></div>
+      <div class="timeline-item reveal reveal-delay-3"><div class="timeline-dot"></div><div class="timeline-year">2024</div><h4>Kletap Labs Founded</h4><p>Launched the studio with a mission to build AI-first apps, automation systems, and SaaS platforms that reshape industries.</p></div>
+      <div class="timeline-item reveal"><div class="timeline-dot" style="background:#a78bfa;border-color:#c4b5fd;box-shadow:0 0 12px rgba(167,139,250,.4);"></div><div class="timeline-year">2025 →</div><h4>Products Launch & Scale</h4><p>Multiple products enter beta. Consulting services go live. The studio grows.</p></div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section>
+    <div class="section-header reveal centered">
+      <div class="section-tag">Values</div>
+      <h2 class="section-title">What drives <span>everything</span></h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal"><div class="value-icon">💡</div><h3>Innovation</h3><p>We push boundaries, embrace emerging technologies, and build what hasn't been built before.</p></div>
+      <div class="value-card reveal reveal-delay-1"><div class="value-icon">✦</div><h3>Simplicity</h3><p>The best solutions are elegantly simple. We remove complexity, not add to it.</p></div>
+      <div class="value-card reveal reveal-delay-2"><div class="value-icon">🔄</div><h3>Automation</h3><p>If it can be automated intelligently, it should be. We free humans for the work that matters.</p></div>
+      <div class="value-card reveal"><div class="value-icon">📈</div><h3>Scalability</h3><p>We build for today's needs with tomorrow's scale in mind — robust, resilient, and ready.</p></div>
+      <div class="value-card reveal reveal-delay-1"><div class="value-icon">🎨</div><h3>Creativity</h3><p>Technology and design are inseparable. We craft products that are as beautiful as they are functional.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="nav-logo"><div class="logo-mark">KL</div>Kletap Labs</div><p>An AI-powered technology studio building the next generation of intelligent apps and automation systems.</p><div class="footer-social"><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">in</a><a href="#" class="social-btn">⌥</a></div></div>
+      <div class="footer-col"><h4>Company</h4><a href="#" onclick="navigate('home')">Home</a><a href="#" onclick="navigate('products')">Products</a><a href="#" onclick="navigate('services')">Services</a><a href="#" onclick="navigate('contact')">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a href="#" onclick="navigate('services')">AI Automation</a><a href="#" onclick="navigate('services')">Consulting</a><a href="#" onclick="navigate('services')">SaaS Dev</a></div>
+      <div class="footer-col"><h4>Connect</h4><a href="#">Twitter/X</a><a href="#">LinkedIn</a><a href="#">GitHub</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 <span>Kletap Labs</span>. All rights reserved.</p></div>
+  </footer>
+</div><!-- /about -->
+
+
+<!-- ══════════════════════════════════════
+     PAGE: PRODUCTS
+══════════════════════════════════════ -->
+<div class="page" id="page-products">
+
+  <div style="padding:140px 6vw 60px;">
+    <div class="section-tag">Products</div>
+    <h1 class="hero-title" style="text-align:left;font-size:clamp(2.5rem,5vw,4rem);">Apps built for<br>an <span style="background:linear-gradient(135deg,var(--blue-light),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">intelligent world.</span></h1>
+    <p class="hero-sub" style="text-align:left;margin:0;max-width:540px;">Every product we ship is AI-first, human-centered, and engineered to solve real problems at scale.</p>
+  </div>
+
+  <section>
+    <div class="products-grid">
+      <!-- Card 1 -->
+      <div class="product-card reveal">
+        <div class="product-icon-wrap" style="background:linear-gradient(135deg,rgba(37,99,255,.15),rgba(37,99,255,.03));">⛳</div>
+        <div class="status-pill status-soon" style="margin-bottom:1rem;">Coming Soon</div>
+        <h3>Caddie AI</h3>
+        <p>Your intelligent golf assistant — AI-powered course strategy, real-time swing feedback, stat tracking, and coaching insights. Golf, reimagined.</p>
+        <div class="product-tags"><span class="tag">Mobile App</span><span class="tag">Sports AI</span><span class="tag">iOS & Android</span></div>
+      </div>
+      <!-- Card 2 -->
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-icon-wrap" style="background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(167,139,250,.03));">👨‍👩‍👧‍👦</div>
+        <div class="status-pill status-soon" style="margin-bottom:1rem;">Coming Soon</div>
+        <h3>FamilyOS</h3>
+        <p>The all-in-one family organization platform. Shared calendars, task management, household finance, and AI-powered family coordination.</p>
+        <div class="product-tags"><span class="tag">Consumer App</span><span class="tag">Family Tech</span><span class="tag">Productivity</span></div>
+      </div>
+      <!-- Card 3 -->
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-icon-wrap" style="background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.03));">🃏</div>
+        <div class="status-pill status-soon" style="margin-bottom:1rem;">Coming Soon</div>
+        <h3>CardVault AI</h3>
+        <p>AI-powered trading card platform. Scan any card, get instant grading estimates, live market values, and intelligent trade recommendations.</p>
+        <div class="product-tags"><span class="tag">Computer Vision</span><span class="tag">Collectibles</span><span class="tag">Marketplace</span></div>
+      </div>
+      <!-- Card 4 -->
+      <div class="product-card reveal">
+        <div class="product-icon-wrap" style="background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(16,185,129,.03));">🔄</div>
+        <div class="status-pill status-soon" style="margin-bottom:1rem;">Coming Soon</div>
+        <h3>AutoFlow</h3>
+        <p>Visual AI workflow automation builder for small and medium businesses. Connect apps, automate tasks, and eliminate manual work — no code required.</p>
+        <div class="product-tags"><span class="tag">Automation</span><span class="tag">No-Code</span><span class="tag">SaaS</span></div>
+      </div>
+      <!-- Card 5 -->
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-icon-wrap" style="background:linear-gradient(135deg,rgba(239,68,68,.15),rgba(239,68,68,.03));">💬</div>
+        <div class="status-pill status-soon" style="margin-bottom:1rem;">Coming Soon</div>
+        <h3>CommunityHub</h3>
+        <p>Next-generation social and community platform built for niche groups. AI-moderated, engagement-optimized, and deeply customizable.</p>
+        <div class="product-tags"><span class="tag">Social App</span><span class="tag">Community</span><span class="tag">AI Moderation</span></div>
+      </div>
+      <!-- Card 6 -->
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-icon-wrap" style="background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(99,102,241,.03));">📊</div>
+        <div class="status-pill status-soon" style="margin-bottom:1rem;">Coming Soon</div>
+        <h3>InsightBoard</h3>
+        <p>AI-driven business intelligence dashboard. Real-time KPI tracking, predictive analytics, and automated reporting for modern teams.</p>
+        <div class="product-tags"><span class="tag">Analytics</span><span class="tag">SaaS</span><span class="tag">BI Tool</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="text-align:center;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="section-tag" style="justify-content:center;">Early Access</div>
+    <h2 class="section-title reveal">Get early access to<br><span>every product we ship.</span></h2>
+    <p class="section-sub reveal" style="margin:0 auto 2.5rem;">Join our waitlist and be first in line when our apps launch. Early users get exclusive pricing.</p>
+    <div class="email-form reveal" style="justify-content:center;">
+      <input type="email" class="email-input" placeholder="your@email.com" style="max-width:300px;"/>
+      <button class="btn-primary" onclick="handleSubscribe(this)">Join Waitlist →</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="nav-logo"><div class="logo-mark">KL</div>Kletap Labs</div><p>AI technology studio building intelligent apps and automation systems.</p><div class="footer-social"><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">in</a><a href="#" class="social-btn">⌥</a></div></div>
+      <div class="footer-col"><h4>Company</h4><a href="#" onclick="navigate('home')">Home</a><a href="#" onclick="navigate('about')">About</a><a href="#" onclick="navigate('services')">Services</a><a href="#" onclick="navigate('contact')">Contact</a></div>
+      <div class="footer-col"><h4>Products</h4><a href="#">Caddie AI</a><a href="#">FamilyOS</a><a href="#">CardVault AI</a><a href="#">AutoFlow</a></div>
+      <div class="footer-col"><h4>Connect</h4><a href="#">Twitter/X</a><a href="#">LinkedIn</a><a href="#">GitHub</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 <span>Kletap Labs</span>. All rights reserved.</p></div>
+  </footer>
+</div><!-- /products -->
+
+
+<!-- ══════════════════════════════════════
+     PAGE: SERVICES
+══════════════════════════════════════ -->
+<div class="page" id="page-services">
+
+  <div style="padding:140px 6vw 60px;">
+    <div class="section-tag">Services</div>
+    <h1 class="hero-title" style="text-align:left;font-size:clamp(2.5rem,5vw,4rem);">AI expertise,<br><span style="background:linear-gradient(135deg,var(--blue-light),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">delivered.</span></h1>
+    <p class="hero-sub" style="text-align:left;margin:0;max-width:540px;">From strategic consulting to full-scale AI development — we partner with businesses to build smarter systems.</p>
+  </div>
+
+  <section>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">🔄</div>
+        <h3>AI Workflow Automation</h3>
+        <p>We design, build, and deploy intelligent automation systems that eliminate manual work and scale effortlessly.</p>
+        <ul class="service-features"><li>Custom automation architecture</li><li>Multi-app integrations & APIs</li><li>AI-powered decision logic</li><li>Real-time monitoring & alerts</li><li>Maintenance & support</li></ul>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">🏢</div>
+        <h3>Small Business Process Automation</h3>
+        <p>Affordable, practical automation for SMBs — reduce overhead, eliminate errors, and free your team for growth work.</p>
+        <ul class="service-features"><li>Process audit & mapping</li><li>CRM & tool automation</li><li>Invoice & reporting automation</li><li>Customer onboarding flows</li><li>Quick implementation</li></ul>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🧠</div>
+        <h3>AI Consulting & Strategy</h3>
+        <p>10+ years of technology and systems expertise applied to AI adoption — we help you build the right roadmap.</p>
+        <ul class="service-features"><li>AI readiness assessment</li><li>Technology stack recommendations</li><li>Implementation roadmap</li><li>ROI modeling & business case</li><li>Executive stakeholder briefings</li></ul>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🏗️</div>
+        <h3>Custom SaaS Development</h3>
+        <p>Full-stack SaaS platforms built from the ground up — architecture, design, development, and launch.</p>
+        <ul class="service-features"><li>Product design & UX</li><li>Full-stack development</li><li>Cloud infrastructure setup</li><li>Auth, billing & subscriptions</li><li>Post-launch support</li></ul>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">📊</div>
+        <h3>Dashboards & Reporting Systems</h3>
+        <p>Custom business intelligence dashboards that give your team real-time visibility into what actually matters.</p>
+        <ul class="service-features"><li>KPI dashboard design</li><li>Data pipeline setup</li><li>Automated report generation</li><li>Multi-source data integration</li><li>Mobile-friendly interfaces</li></ul>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">💬</div>
+        <h3>AI Chatbot Integrations</h3>
+        <p>Intelligent chatbots for customer support, lead capture, and internal knowledge management — trained on your data.</p>
+        <ul class="service-features"><li>Custom LLM fine-tuning</li><li>Website & app integration</li><li>CRM sync & handoff logic</li><li>Multi-channel deployment</li><li>Analytics & optimization</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="section-header reveal centered">
+      <div class="section-tag">Pricing</div>
+      <h2 class="section-title">Transparent,<br><span>flexible pricing</span></h2>
+      <p class="section-sub">Every engagement is unique. Here's a starting point — final pricing based on project scope.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <h3>Starter</h3>
+        <div class="price">$1,500<span>/project</span></div>
+        <p>Perfect for small businesses looking to automate one key workflow.</p>
+        <ul class="pricing-features"><li>1 automation workflow</li><li>Up to 3 app integrations</li><li>30-day support</li><li>Documentation included</li></ul>
+        <button class="btn-secondary" style="width:100%;" onclick="navigate('contact')">Get Started</button>
+      </div>
+      <div class="pricing-card featured reveal reveal-delay-1">
+        <h3>Growth</h3>
+        <div class="price">$4,500<span>/project</span></div>
+        <p>For businesses ready to automate multiple processes and build momentum.</p>
+        <ul class="pricing-features"><li>Up to 5 automation workflows</li><li>Custom dashboard</li><li>AI chatbot integration</li><li>90-day support</li><li>Priority response</li></ul>
+        <button class="btn-primary" style="width:100%;" onclick="navigate('contact')">Get Started →</button>
+      </div>
+      <div class="pricing-card reveal reveal-delay-2">
+        <h3>Enterprise</h3>
+        <div class="price">Custom</div>
+        <p>Full-scale AI transformation, custom SaaS development, and strategic consulting.</p>
+        <ul class="pricing-features"><li>Unlimited automations</li><li>Custom SaaS product</li><li>Dedicated team</li><li>AI strategy consulting</li><li>Ongoing partnership</li></ul>
+        <button class="btn-secondary" style="width:100%;" onclick="navigate('contact')">Contact Us</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING FORM -->
+  <section>
+    <div class="booking-section reveal">
+      <div class="section-tag">Book a Consultation</div>
+      <h3>Let's talk about your project</h3>
+      <p>Tell us what you're building or trying to solve. We'll reach out within 24 hours.</p>
+      <div class="form-grid">
+        <div class="form-field"><label>First Name</label><input type="text" placeholder="John"/></div>
+        <div class="form-field"><label>Last Name</label><input type="text" placeholder="Smith"/></div>
+        <div class="form-field"><label>Email</label><input type="email" placeholder="john@company.com"/></div>
+        <div class="form-field"><label>Company</label><input type="text" placeholder="Company Inc."/></div>
+        <div class="form-field full"><label>Service Interested In</label>
+          <select><option>AI Workflow Automation</option><option>Business Process Automation</option><option>AI Consulting & Strategy</option><option>Custom SaaS Development</option><option>Dashboard & Reporting</option><option>AI Chatbot Integration</option><option>Other</option></select>
+        </div>
+        <div class="form-field full"><label>Tell us about your project</label><textarea placeholder="Describe your challenge, goals, or what you'd like to automate..."></textarea></div>
+      </div>
+      <button class="btn-primary" style="margin-top:1.5rem;width:100%;justify-content:center;" onclick="handleFormSubmit(this)">Book Consultation →</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="nav-logo"><div class="logo-mark">KL</div>Kletap Labs</div><p>AI technology studio building intelligent apps and automation systems.</p><div class="footer-social"><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">in</a><a href="#" class="social-btn">⌥</a></div></div>
+      <div class="footer-col"><h4>Company</h4><a href="#" onclick="navigate('home')">Home</a><a href="#" onclick="navigate('about')">About</a><a href="#" onclick="navigate('products')">Products</a><a href="#" onclick="navigate('contact')">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a href="#">AI Automation</a><a href="#">AI Consulting</a><a href="#">SaaS Development</a><a href="#">AI Chatbots</a></div>
+      <div class="footer-col"><h4>Connect</h4><a href="#">Twitter/X</a><a href="#">LinkedIn</a><a href="#">GitHub</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 <span>Kletap Labs</span>. All rights reserved.</p></div>
+  </footer>
+</div><!-- /services -->
+
+
+<!-- ══════════════════════════════════════
+     PAGE: CONTACT
+══════════════════════════════════════ -->
+<div class="page" id="page-contact">
+
+  <div style="padding:140px 6vw 60px;">
+    <div class="section-tag">Contact</div>
+    <h1 class="hero-title" style="text-align:left;font-size:clamp(2.5rem,5vw,4rem);">Let's build<br>something <span style="background:linear-gradient(135deg,var(--blue-light),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">great.</span></h1>
+  </div>
+
+  <section>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p>Whether you're ready to start a project, curious about our products, or just want to explore what's possible with AI — we'd love to hear from you.</p>
+        <div class="contact-links">
+          <div class="contact-link"><div class="contact-link-icon">📧</div><div class="contact-link-text"><strong>Email Us</strong><span>hello@kletaplabs.com</span></div></div>
+          <div class="contact-link"><div class="contact-link-icon">𝕏</div><div class="contact-link-text"><strong>Twitter / X</strong><span>@kletaplabs</span></div></div>
+          <div class="contact-link"><div class="contact-link-icon">in</div><div class="contact-link-text"><strong>LinkedIn</strong><span>Kletap Labs</span></div></div>
+          <div class="contact-link"><div class="contact-link-icon">⌥</div><div class="contact-link-text"><strong>GitHub</strong><span>github.com/kletaplabs</span></div></div>
+        </div>
+
+        <div class="calendly-placeholder">
+          <p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem;">📅 Prefer to book a call directly?</p>
+          <button class="btn-primary" style="width:100%;justify-content:center;" onclick="alert('Calendly integration — add your Calendly link here.')">Schedule via Calendly →</button>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:.75rem;">30-min intro call · Free · No obligation</p>
+        </div>
+
+        <!-- Newsletter -->
+        <div style="margin-top:2rem;padding:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;">
+          <p style="font-size:.85rem;font-weight:600;color:var(--white);margin-bottom:.5rem;">📨 Newsletter</p>
+          <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem;">Get product updates & AI insights.</p>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <input type="email" class="email-input" placeholder="your@email.com" style="flex:1;min-width:150px;padding:10px 14px;font-size:.85rem;"/>
+            <button class="btn-primary" style="padding:10px 18px;font-size:.85rem;" onclick="handleSubscribe(this)">Join →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="contact-form reveal reveal-delay-1">
+        <h3>Send us a message</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>First Name</label><input type="text" placeholder="John"/></div>
+          <div class="form-field"><label>Last Name</label><input type="text" placeholder="Smith"/></div>
+          <div class="form-field full"><label>Email</label><input type="email" placeholder="john@company.com"/></div>
+          <div class="form-field full"><label>Inquiry Type</label>
+            <select><option>General Inquiry</option><option>Services — AI Automation</option><option>Services — Consulting</option><option>Services — SaaS Development</option><option>Product Partnership</option><option>Press / Media</option><option>Career Opportunity</option><option>Other</option></select>
+          </div>
+          <div class="form-field full"><label>Message</label><textarea placeholder="Tell us what's on your mind..."></textarea></div>
+        </div>
+        <button class="btn-primary" style="margin-top:1.5rem;width:100%;justify-content:center;" onclick="handleFormSubmit(this)">Send Message →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="nav-logo"><div class="logo-mark">KL</div>Kletap Labs</div><p>AI technology studio building the next generation of intelligent apps and automation systems.</p><div class="footer-social"><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">in</a><a href="#" class="social-btn">⌥</a></div></div>
+      <div class="footer-col"><h4>Company</h4><a href="#" onclick="navigate('home')">Home</a><a href="#" onclick="navigate('about')">About</a><a href="#" onclick="navigate('products')">Products</a><a href="#" onclick="navigate('services')">Services</a></div>
+      <div class="footer-col"><h4>Products</h4><a href="#">Caddie AI</a><a href="#">FamilyOS</a><a href="#">CardVault AI</a><a href="#">AutoFlow</a></div>
+      <div class="footer-col"><h4>Legal</h4><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Cookie Policy</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 <span>Kletap Labs</span>. All rights reserved. Built with intelligence.</p></div>
+  </footer>
+</div><!-- /contact -->
+
+
+<!-- ══════════════════════════════════════ JS ══════════════════════════════════════ -->
+<script>
+// ── NAVIGATION ──
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === page);
+  });
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  setTimeout(initReveal, 100);
+}
+
+// ── MOBILE MENU ──
+function toggleMobile() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// ── NAVBAR SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ── SCROLL REVEAL ──
+function initReveal() {
+  const els = document.querySelectorAll('.page.active .reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(el => { el.classList.remove('visible'); obs.observe(el); });
+}
+initReveal();
+document.querySelectorAll('.page.active .reveal').forEach(el => el.classList.add('visible'));
+
+// ── ANIMATED CANVAS BACKGROUND ──
+const canvas = document.createElement('canvas');
+canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;opacity:.4;';
+document.getElementById('heroCanvas').appendChild(canvas);
+const ctx = canvas.getContext('2d');
+let w, h, nodes = [];
+function resize() {
+  w = canvas.width = canvas.offsetWidth;
+  h = canvas.height = canvas.offsetHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+for (let i = 0; i < 60; i++) {
+  nodes.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random()-.5)*.4, vy: (Math.random()-.5)*.4, r: Math.random()*2+1 });
+}
+function drawCanvas() {
+  ctx.clearRect(0,0,w,h);
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0) n.x = w; if (n.x > w) n.x = 0;
+    if (n.y < 0) n.y = h; if (n.y > h) n.y = 0;
+    ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(37,99,255,0.6)'; ctx.fill();
+    nodes.forEach(m => {
+      const dx = n.x-m.x, dy = n.y-m.y, d = Math.sqrt(dx*dx+dy*dy);
+      if (d < 120) {
+        ctx.beginPath(); ctx.moveTo(n.x,n.y); ctx.lineTo(m.x,m.y);
+        ctx.strokeStyle = `rgba(37,99,255,${.2*(1-d/120)})`; ctx.lineWidth = .5; ctx.stroke();
+      }
+    });
+  });
+  requestAnimationFrame(drawCanvas);
+}
+drawCanvas();
+
+// ── CURSOR GLOW ──
+const cg = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', e => {
+  cg.style.left = e.clientX + 'px';
+  cg.style.top = e.clientY + 'px';
+});
+
+// ── SUBSCRIBE ──
+function handleSubscribe(btn) {
+  const input = btn.previousElementSibling || btn.parentElement.querySelector('input[type=email]');
+  if (input && input.value.includes('@')) {
+    btn.textContent = '✓ Subscribed!';
+    btn.style.background = 'linear-gradient(135deg,#059669,#34d399)';
+    btn.disabled = true;
+    input.value = '';
+    setTimeout(() => { btn.textContent = 'Subscribe →'; btn.style.background = ''; btn.disabled = false; }, 3000);
+  } else {
+    if (input) { input.style.borderColor = 'rgba(239,68,68,.5)'; setTimeout(() => input.style.borderColor = '', 2000); }
+  }
+}
+
+// ── FORM SUBMIT ──
+function handleFormSubmit(btn) {
+  btn.textContent = '✓ Message Sent!';
+  btn.style.background = 'linear-gradient(135deg,#059669,#34d399)';
+  btn.disabled = true;
+  setTimeout(() => { btn.textContent = btn.textContent.includes('Book') ? 'Book Consultation →' : 'Send Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
+}
+</script>
+</body>
+</html>
