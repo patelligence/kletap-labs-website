@@ -105,7 +105,7 @@ export function Contact() {
 
                 <div>
                   <label className="mb-2 block text-xs font-medium text-muted">
-                    What's your biggest operational pain point?
+                    What&apos;s your biggest operational pain point?
                   </label>
                   <Textarea
                     name="message"
@@ -145,7 +145,7 @@ export function Contact() {
                   Message received.
                 </h3>
                 <p className="mt-2 max-w-md text-sm text-muted">
-                  Thanks, {form.name || "friend"} — we'll be in touch at{" "}
+                  Thanks, {form.name || "friend"} — we&apos;ll be in touch at{" "}
                   <span className="text-foreground">{form.email || "your email"}</span>{" "}
                   within 24 hours.
                 </p>
