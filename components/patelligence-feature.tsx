@@ -10,8 +10,14 @@ import {
   MessageCircleQuestion,
   Brain,
   ArrowRight,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+// External Patelligence AI site. Override with env var when deploying:
+//   NEXT_PUBLIC_PATELLIGENCE_URL=https://patelligence.ai
+const PATELLIGENCE_URL =
+  process.env.NEXT_PUBLIC_PATELLIGENCE_URL ?? "https://patelligence.ai";
 
 const workflows = [
   { icon: PhoneOff, label: "Missed-call text-back" },
@@ -51,14 +57,19 @@ export function PatelligenceFeature() {
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href="#workflow-builder">
+                <a
+                  href={PATELLIGENCE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Button size="lg" className="w-full sm:w-auto">
-                    Try the Demo <ArrowRight className="h-4 w-4" />
+                    Visit Patelligence AI
+                    <ExternalLink className="h-4 w-4" />
                   </Button>
                 </a>
-                <a href="#contact">
+                <a href="#workflow-builder">
                   <Button size="lg" variant="secondary" className="w-full sm:w-auto">
-                    Get Pricing
+                    Try the Demo <ArrowRight className="h-4 w-4" />
                   </Button>
                 </a>
               </div>

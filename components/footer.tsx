@@ -1,21 +1,22 @@
 import { Sparkles } from "lucide-react";
 
+const PATELLIGENCE_URL =
+  process.env.NEXT_PUBLIC_PATELLIGENCE_URL ?? "https://patelligence.ai";
+
 const columns = [
   {
     title: "Studio",
     links: [
       { label: "Kletap Labs", href: "#top" },
+      { label: "What We Do", href: "#what-we-do" },
       { label: "About", href: "#about" },
-      { label: "Ventures", href: "#ventures" },
     ],
   },
   {
     title: "Products",
     links: [
-      { label: "Patelligence AI", href: "#patelligence" },
-      { label: "VetFlow AI", href: "#vetflow" },
-      { label: "BRRRBoard", href: "#" },
-      { label: "FamKnows", href: "#" },
+      { label: "Patelligence AI", href: PATELLIGENCE_URL, external: true },
+      { label: "Try the Demo", href: "#workflow-builder" },
     ],
   },
   {
@@ -55,16 +56,22 @@ export function Footer() {
                 {c.title}
               </p>
               <ul className="mt-4 space-y-2.5">
-                {c.links.map((l) => (
-                  <li key={l.label}>
-                    <a
-                      href={l.href}
-                      className="text-sm text-muted transition-colors hover:text-foreground"
-                    >
-                      {l.label}
-                    </a>
-                  </li>
-                ))}
+                {c.links.map((l) => {
+                  const external = "external" in l && l.external;
+                  return (
+                    <li key={l.label}>
+                      <a
+                        href={l.href}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noopener noreferrer" : undefined}
+                        className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground"
+                      >
+                        {l.label}
+                        {external && <span aria-hidden>↗</span>}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
